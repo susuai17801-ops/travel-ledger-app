@@ -415,6 +415,12 @@ window.addEventListener('online', () => { refreshOfflineBanner(); doSync(false);
 window.addEventListener('offline', refreshOfflineBanner);
 
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  // 新版 service worker 接手時重載一次，確保畫面與程式同一版（第一次安裝不重載）
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController && !reloaded) { reloaded = true; location.reload(); }
+  });
   navigator.serviceWorker.register('sw.js').catch(() => { /* 離線快取失敗不影響記帳 */ });
 }
 
