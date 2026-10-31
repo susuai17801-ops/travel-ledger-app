@@ -358,8 +358,11 @@ async function doSync(manual) {
   $('btnSync').disabled = true;
   try {
     const r = await syncNow();
+    // 恢復網路後，自動補上離線時沒查到匯率的帳目，再送回雲端（補完就不會再有待補，不會迴圈）
+    const fill = await fillMissingRates();
+    if (fill.n) await syncNow();
     refreshOfflineBanner();
-    if (manual) showBanner(`同步完成：送出 ${r.pushed}、收到 ${r.pulled}${r.conflicts ? `、${r.conflicts} 筆被其他裝置較新的版本取代` : ''}`);
+    if (manual) showBanner(`同步完成：送出 ${r.pushed}、收到 ${r.pulled}${r.conflicts ? `、${r.conflicts} 筆被其他裝置較新的版本取代` : ''}${fill.n ? `；自動補算匯率 ${fill.n} 筆` : ''}`);
     await load();
   } catch (e) {
     showBanner('同步失敗（資料仍在手機裡，稍後會重試）：' + (e.message || e));
@@ -395,16 +398,24 @@ $('btnCsv').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
-$('btnRecalc').addEventListener('click', async () => {
-  const todo = state.expenses.filter(e => !e.deleted_at && e.amount_home == null);
+// 補上離線時沒查到匯率的帳目（所有旅程）；回傳 { todo, n }
+async function fillMissingRates() {
+  const todo = (await db.all('Expenses')).filter(e => !e.deleted_at && e.amount_home == null && e.amount_orig > 0);
+  const rates = {};
   let n = 0;
   for (const e of todo) {
-    const r = await getRate(e.currency_orig);
+    if (!(e.currency_orig in rates)) rates[e.currency_orig] = await getRate(e.currency_orig);
+    const r = rates[e.currency_orig];
     if (!r) continue;
     e.fx_rate = r.rate; e.fx_source = r.source; e.amount_home = toHome(e.amount_orig, r.rate);
     await db.save('Expenses', e); n++;
   }
-  showBanner(todo.length ? `已補算 ${n} / ${todo.length} 筆` : '沒有需要補算的帳目');
+  return { todo: todo.length, n };
+}
+
+$('btnRecalc').addEventListener('click', async () => {
+  const r = await fillMissingRates();
+  showBanner(r.todo ? `已補算 ${r.n} / ${r.todo} 筆` : '沒有需要補算的帳目');
   await load();
   scheduleSync();
 });

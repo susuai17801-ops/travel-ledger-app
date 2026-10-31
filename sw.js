@@ -1,5 +1,5 @@
 // 應用殼層快取：離線也能開 App。改了任何檔案就把 VERSION 加一，舊快取會被清掉。
-const VERSION = 'v4';
+const VERSION = 'v5';
 const CACHE = 'travel-ledger-' + VERSION;
 const NETWORK_TIMEOUT_MS = 3000; // 訊號差時最多等 3 秒，再用手機上的快取
 const SHELL = [
