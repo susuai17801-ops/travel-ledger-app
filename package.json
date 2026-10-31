@@ -1,0 +1,6 @@
+{
+  "name": "travel-ledger-app",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node tests/test.mjs", "serve": "py -3 -m http.server 8081" }
+}

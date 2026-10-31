@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>旅遊記帳</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <select id="tripSel" aria-label="目前旅程"></select>
+  <button id="btnSync" class="ghost" aria-label="立即同步">⟳ <span id="syncBadge"></span></button>
+</header>
+<div id="banner" hidden></div>
+
+<main>
+  <section id="v-add">
+    <form id="addForm" autocomplete="off">
+      <input id="quick" placeholder="拉麵 980 円　／　Taxi 12 euro" enterkeyhint="send" aria-label="一行記一筆">
+      <button class="primary" type="submit">記</button>
+    </form>
+    <p class="hint" id="addHint">打一行字：品項 金額 幣別。例：「藥妝 幫媽媽買 5000 円」</p>
+    <div id="card" hidden></div>
+    <h3>最近</h3>
+    <ul id="recent" class="list"></ul>
+  </section>
+
+  <section id="v-list" hidden>
+    <ul id="expList" class="list"></ul>
+  </section>
+
+  <section id="v-stats" hidden>
+    <label class="row"><input type="checkbox" id="inclProxy" checked> 含代購</label>
+    <div id="statsBody"></div>
+  </section>
+
+  <section id="v-set" hidden>
+    <h3>旅程</h3>
+    <div id="tripInfo"></div>
+    <div class="row"><button id="btnNewTrip">新增旅程</button> <button id="btnEditTrip">編輯目前旅程</button></div>
+    <h3>同步</h3>
+    <label>後端網址（…/exec）<input id="cfgUrl" placeholder="https://script.google.com/macros/s/.../exec"></label>
+    <label>金鑰<input id="cfgKey" type="password" autocomplete="off"></label>
+    <div class="row"><button id="btnSave" class="primary">儲存並同步</button></div>
+    <p class="hint" id="syncInfo"></p>
+    <h3>資料</h3>
+    <div class="row">
+      <button id="btnCsv">匯出 CSV</button>
+      <button id="btnRecalc">補算匯率</button>
+    </div>
+    <p class="hint">金鑰只存在這支手機，不在程式碼裡。換手機要重貼一次。</p>
+  </section>
+</main>
+
+<nav>
+  <button data-v="add" class="on">記帳</button>
+  <button data-v="list">帳目</button>
+  <button data-v="stats">分析</button>
+  <button data-v="set">設定</button>
+</nav>
+
+<dialog id="tripDlg">
+  <form method="dialog" id="tripForm">
+    <h3 id="tripDlgTitle">旅程</h3>
+    <label>名稱<input name="name" required maxlength="60"></label>
+    <label>目的地<select name="country"></select></label>
+    <div class="two">
+      <label>出發<input name="start_date" type="date"></label>
+      <label>回程<input name="end_date" type="date"></label>
+    </div>
+    <label>預算（NT$）<input name="budget" type="number" min="0" inputmode="numeric"></label>
+    <label>類型<select name="type"><option value="solo">獨旅</option><option value="family">家庭</option><option value="business">出差</option></select></label>
+    <div class="row"><button value="cancel" formnovalidate>取消</button><button class="primary" value="ok">儲存</button></div>
+  </form>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+:root {
+  --bg: #f6f7f8; --card: #fff; --text: #1b1f23; --muted: #667085; --line: #e3e6ea;
+  --brand: #0f766e; --brand-text: #fff; --warn: #b45309; --bad: #b42318; --bar: #14b8a6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1113; --card: #181c20; --text: #e8eaed; --muted: #98a2b3; --line: #2a3036;
+    --brand: #2dd4bf; --brand-text: #04201d; --warn: #fbbf24; --bad: #f97066; --bar: #2dd4bf;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Noto Sans TC", sans-serif;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+header {
+  position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; align-items: center;
+  padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top));
+  background: var(--card); border-bottom: 1px solid var(--line);
+}
+#tripSel { flex: 1; min-width: 0; }
+main { max-width: 640px; margin: 0 auto; padding: 16px; }
+nav {
+  position: fixed; left: 0; right: 0; bottom: 0; display: flex; background: var(--card);
+  border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom);
+}
+nav button { flex: 1; border: 0; background: none; color: var(--muted); padding: 14px 0; font-size: 15px; min-height: 48px; }
+nav button.on { color: var(--brand); font-weight: 600; }
+input, select, button, textarea { font: inherit; color: inherit; }
+input, select {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card); min-height: 44px;
+}
+label { display: block; margin: 10px 0; font-size: 14px; color: var(--muted); }
+label input, label select { margin-top: 4px; color: var(--text); font-size: 16px; }
+button {
+  padding: 10px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+  min-height: 44px; cursor: pointer;
+}
+button.primary { background: var(--brand); color: var(--brand-text); border-color: var(--brand); font-weight: 600; }
+button.ghost { border: 0; background: none; font-size: 18px; padding: 8px 10px; }
+button.danger { color: var(--bad); }
+#addForm { display: flex; gap: 8px; }
+#addForm button { min-width: 64px; }
+#banner { margin: 0; padding: 8px 16px; background: var(--warn); color: #000; font-size: 14px; }
+.hint { color: var(--muted); font-size: 13px; margin: 8px 0; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+h3 { margin: 22px 0 8px; font-size: 14px; color: var(--muted); font-weight: 600; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li {
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+  padding: 12px 14px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+}
+.list .sub { color: var(--muted); font-size: 13px; }
+.list .amt { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.list .day { background: none; border: 0; padding: 14px 4px 2px; color: var(--muted); font-size: 13px; cursor: default; }
+.tag { font-size: 12px; padding: 1px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; }
+.tag.warn { color: var(--warn); border-color: var(--warn); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin: 12px 0; }
+.card .fx { color: var(--muted); font-size: 13px; margin: 6px 0; }
+.big { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bar { height: 10px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.bar > i { display: block; height: 100%; background: var(--bar); }
+.stat { margin: 12px 0; }
+.stat .head { display: flex; justify-content: space-between; font-size: 14px; }
+dialog { border: 0; border-radius: 16px; padding: 18px; width: min(92vw, 420px); background: var(--card); color: var(--text); }
+dialog::backdrop { background: rgba(0, 0, 0, .5); }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
