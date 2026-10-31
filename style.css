@@ -46,7 +46,11 @@ button.danger { color: var(--bad); }
 #banner { margin: 0; padding: 8px 16px; background: var(--warn); color: #000; font-size: 14px; }
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0; }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.two > label { min-width: 0; }
+input[type="date"], input[type="datetime-local"] { min-width: 0; max-width: 100%; }
+.restore { display: none; width: 100%; margin: 0 0 8px; }
+.restore.show { display: block; }
 h3 { margin: 22px 0 8px; font-size: 14px; color: var(--muted); font-weight: 600; }
 .list { list-style: none; margin: 0; padding: 0; }
 .list li {

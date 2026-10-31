@@ -301,8 +301,16 @@ function openTripDialog(trip) {
   f.elements.budget.value = trip && trip.budget ? trip.budget : '';
   f.elements.type.value = trip ? trip.type || 'solo' : 'solo';
   f.dataset.editing = trip ? trip.trip_id : '';
+  // 新裝置第一次開：本機沒旅程且還沒設定同步 → 提供「從雲端還原」入口
+  $('dlgRestore').classList.toggle('show', !trip && !state.trips.length && !getConfig().url);
   $('tripDlg').showModal();
 }
+
+$('dlgRestore').addEventListener('click', () => {
+  $('tripDlg').close('cancel');
+  setView('set');
+  showBanner('貼上後端網址與金鑰，按「儲存並同步」就能把旅程與帳目還原');
+});
 
 $('tripDlg').addEventListener('close', async () => {
   const dlg = $('tripDlg');
